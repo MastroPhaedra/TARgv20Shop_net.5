@@ -4,4 +4,8 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Targv20Shop.Data\Targv20Shop.Data.csproj" />
+  </ItemGroup>
+
 </Project>
