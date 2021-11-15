@@ -1,2 +1,30 @@
-﻿
-ieefgiuywgfiergp
+﻿@model IEnumerable<Targv20Shop.Models.Product.ProductListViewModel>
+
+<div>
+    <a asp-action="add" asp-controller="product" type="submit" class="btn btn-danger">Add</a>
+</div>
+<form method="post">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nr</th>
+                <th scope="col">Name</th>
+                <th scope="col">Description</th>
+                <th scope="col">Price</th>
+                <th scope="col">Ammount</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in collection)
+            {
+                <tr>
+                    <td class=""></td>
+                    <td class=""></td>
+                    <td class=""></td>
+                    <td class=""></td>
+                    <td class=""></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
