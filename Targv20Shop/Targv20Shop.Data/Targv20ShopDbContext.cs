@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Targv20Shop.Core.Domain;
 
 namespace Targv20Shop.Data
 {
@@ -12,5 +13,6 @@ namespace Targv20Shop.Data
         public Targv20ShopDbContext(DbContextOptions<Targv20ShopDbContext> options)
             : base(options) { }
 
+        public DbSet<Product> Product { get; set; }
     }
 }

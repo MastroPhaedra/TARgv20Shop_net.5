@@ -28,7 +28,7 @@ namespace Targv20Shop
             services.AddControllersWithViews();
 
             services.AddDbContext<Targv20ShopDbContext>(options =>
-                options.UseSqlServer(_config["DefaultConnetion"]));
+                options.UseSqlServer(_config["DeafultConnetion"]));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
