@@ -15,6 +15,7 @@ namespace Targv20Shop.Controllers
         public ProductController
             (
                 Targv20ShopDbContext context
+                
             )
         {
             _context = context;
@@ -35,5 +36,14 @@ namespace Targv20Shop.Controllers
 
             return View(result);
         }
+
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            //var product = await _
+
+
+            return RedirectToAction(nameof(Index), null);
+        }
+
     }
 }

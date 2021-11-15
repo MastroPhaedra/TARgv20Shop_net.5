@@ -5,7 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\Targv20Shop.Core\Targv20Shop.Core.csproj" />
+    <ProjectReference Include="..\Targv20Shop.Data\Targv20Shop.Data.csproj" />
   </ItemGroup>
 
 </Project>
