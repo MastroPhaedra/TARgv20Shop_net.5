@@ -9,6 +9,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Targv20Shop.ApplicationServices.Services;
+using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
 
 namespace Targv20Shop
@@ -29,6 +31,8 @@ namespace Targv20Shop
 
             services.AddDbContext<Targv20ShopDbContext>(options =>
                 options.UseSqlServer(_config["DeafultConnetion"]));
+
+            services.AddScoped<IProductService, ProductServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

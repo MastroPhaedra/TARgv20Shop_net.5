@@ -44,10 +44,19 @@ namespace Targv20Shop.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             var product = await _productService.Delete(id);
+            if (product == null)
+            {
+                RedirectToAction(nameof(Index));
+            }
 
+            return RedirectToAction(nameof(Index), product);
+        }
 
+        [HttpGet]
+        public IActionResult Add()
+        {
 
-            return RedirectToAction(nameof(Index), null);
+            return View("Edit");
         }
 
     }
