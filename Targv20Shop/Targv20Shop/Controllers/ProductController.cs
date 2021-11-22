@@ -34,7 +34,7 @@ namespace Targv20Shop.Controllers
                     Id = x.Id,
                     Name = x.Name,
                     Price = x.Price,
-                    Ammount = x.Ammount,
+                    Ammount = x.Amount,
                     Description = x.Description
                 });
 
@@ -82,6 +82,32 @@ namespace Targv20Shop.Controllers
             }
 
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var product = await _productService.Edit(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductViewModel();
+
+            var dto = new ProductDto()
+            {
+                Id = model.Id,
+                Description = model.Description,
+                Name = model.Name,
+                Amount = model.Amount,
+                Price = model.Price,
+                ModifiedAt = model.ModifiedAt,
+                CreatedAt = model.CreatedAt
+            };
+
+            return View(model);
+
         }
 
     }

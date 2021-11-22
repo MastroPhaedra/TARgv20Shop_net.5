@@ -1,8 +1,15 @@
 ﻿@model Targv20Shop.Models.Product.ProductViewModel
 
 
-
+@if (Model.Id.HasValue)
+{
+    <h1>Update</h1>
+}
+else
+{
     <h1>Add</h1>
+}
+
 
 
 <div>
@@ -37,7 +44,15 @@
             </div>
         </div>
 
-        <input asp-action="add" asp-controller="product" type="submit" class="btn btn-primary" value="Add">
+        @if (Model.Id.HasValue)
+        {
+            <input asp-action="edit" asp-controller="product" type="submit" class="btn btn-primary" value="Update">
+            <input asp-action="delete" asp-controller="product" asp-for="Id" type="submit" class="btn btn-danger" value="Delete">
+        }
+        else
+        {
+            <input asp-action="add" asp-controller="product" type="submit" class="btn btn-primary" value="Add">
+        }
         <a asp-action="index" class="btn btn-primary">Index</a>
 
     </form>
