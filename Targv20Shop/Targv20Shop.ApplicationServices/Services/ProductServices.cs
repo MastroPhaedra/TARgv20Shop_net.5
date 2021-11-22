@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Targv20Shop.Core.Domain;
+using Targv20Shop.Core.Dtos;
 using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
 
@@ -31,6 +32,25 @@ namespace Targv20Shop.ApplicationServices.Services
             await _context.SaveChangesAsync();
 
             return productId;
+        }
+
+        public async Task<Product> Add(ProductDto dto)
+        {
+            var domain = new Product()
+            {
+                Id = dto.Id,
+                Description = dto.Description,
+                Name = dto.Name,
+                Ammount = dto.Amount,
+                Price = dto.Price,
+                ModifiedAt = dto.ModifiedAt,
+                CreatedAt = dto.CreatedAt
+            };
+
+            await _context.Product.AddAsync(domain);
+            await _context.SaveChangesAsync();
+
+            return domain;
         }
 
     }

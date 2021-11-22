@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Targv20Shop.Core.Dtos;
 using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
 using Targv20Shop.Models.Product;
@@ -55,8 +56,32 @@ namespace Targv20Shop.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            ProductViewModel model = new ProductViewModel();
 
-            return View("Edit");
+            return View("Edit", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Add(ProductViewModel model)
+        {
+            var dto = new ProductDto()
+            {
+                Id = model.Id,
+                Description = model.Description,
+                Name = model.Name,
+                Amount = model.Amount,
+                Price = model.Price,
+                ModifiedAt = model.ModifiedAt,
+                CreatedAt = model.CreatedAt
+            };
+
+            var result = await _productService.Add(dto);
+            if (result == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction("Index");
         }
 
     }
