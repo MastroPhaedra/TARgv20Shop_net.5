@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
 using Targv20Shop.Models.Product;
 
@@ -11,14 +12,16 @@ namespace Targv20Shop.Controllers
     public class ProductController : Controller
     {
         private readonly Targv20ShopDbContext _context;
+        private readonly IProductService _productService;
 
         public ProductController
             (
-                Targv20ShopDbContext context
-                
+                Targv20ShopDbContext context,
+                IProductService productService
             )
         {
             _context = context;
+            _productService = productService;
         }
 
 
@@ -37,9 +40,11 @@ namespace Targv20Shop.Controllers
             return View(result);
         }
 
+        [HttpPost]
         public async Task<IActionResult> Delete(Guid id)
         {
-            //var product = await _
+            var product = await _productService.Delete(id);
+
 
 
             return RedirectToAction(nameof(Index), null);
