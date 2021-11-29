@@ -1,26 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Targv20Shop.Core.Domain;
 using Targv20Shop.Core.Dtos;
 using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
+using Microsoft.Extensions.Hosting;
+using System.IO;
 
 namespace Targv20Shop.ApplicationServices.Services
 {
     public class ProductServices : IProductService
     {
         private readonly Targv20ShopDbContext _context;
+        private readonly IHostingEnvironment _env;
 
         public ProductServices
             (
-                Targv20ShopDbContext context
+                Targv20ShopDbContext context,
+                IHostingEnvironment env
             )
         {
             _context = context;
+            _env = env;
         }
 
         public async Task<Product> Delete(Guid id)
@@ -36,21 +38,21 @@ namespace Targv20Shop.ApplicationServices.Services
 
         public async Task<Product> Add(ProductDto dto)
         {
-            var domain = new Product()
-            {
-                Id = dto.Id,
-                Description = dto.Description,
-                Name = dto.Name,
-                Amount = dto.Amount,
-                Price = dto.Price,
-                ModifiedAt = DateTime.Now,
-                CreatedAt = DateTime.Now
-            };
+            Product product = new Product();
 
-            await _context.Product.AddAsync(domain);
+            product.Id = dto.Id;
+            product.Description = dto.Description;
+            product.Name = dto.Name;
+            product.Amount = dto.Amount;
+            product.Price = dto.Price;
+            product.ModifiedAt = DateTime.Now;
+            product.CreatedAt = DateTime.Now;
+            ProcessUploadedFile(dto, product);
+
+            await _context.Product.AddAsync(product);
             await _context.SaveChangesAsync();
 
-            return domain;
+            return product;
         }
 
 
@@ -59,21 +61,58 @@ namespace Targv20Shop.ApplicationServices.Services
             var result = await _context.Product
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            var dto = new ProductDto();
-
-            var domain = new Product()
-            {
-                Id = dto.Id,
-                Description = dto.Description,
-                Name = dto.Name,
-                Amount = dto.Amount,
-                Price = dto.Price,
-                ModifiedAt = DateTime.Now,
-                CreatedAt = dto.CreatedAt
-            };
-
-            return domain;
+            return result;
         }
 
+        public async Task<Product> Update(ProductDto dto)
+        {
+            Product product = new Product();
+
+            product.Id = dto.Id;
+            product.Description = dto.Description;
+            product.Name = dto.Name;
+            product.Amount = dto.Amount;
+            product.Price = dto.Price;
+            product.ModifiedAt = dto.ModifiedAt;
+            product.CreatedAt = dto.CreatedAt;
+
+            _context.Product.Update(product);
+            await _context.SaveChangesAsync();
+
+            return product;
+        }
+
+
+        public string ProcessUploadedFile(ProductDto dto, Product product)
+        {
+            string uniqueFileName = null;
+
+            if (dto.Files != null && dto.Files.Count > 0)
+            {
+
+                foreach (var photo in dto.Files)
+                {
+                    string uploadsFolder = Path.Combine(_env.ContentRootPath, "multipleFileUpload");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        photo.CopyTo(fileStream);
+
+                        ExistingFilePath paths = new ExistingFilePath
+                        {
+                            Id = Guid.NewGuid(),
+                            FilePath = uniqueFileName,
+                            ProductId = product.Id
+                        };
+
+                        _context.ExistingFilePath.Add(paths);
+                    }
+                }
+            }
+
+            return uniqueFileName;
+        }
     }
 }

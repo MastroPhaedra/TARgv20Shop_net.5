@@ -13,5 +13,7 @@ namespace Targv20Shop.Core.ServiceInterface
 
         Task<Product> Edit(Guid id);
 
+        Task<Product> Update(ProductDto dto);
+
     }
 }
