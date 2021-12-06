@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Targv20Shop.Core.Dtos;
 using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
+using Targv20Shop.Models.Files;
 using Targv20Shop.Models.Product;
 
 namespace Targv20Shop.Controllers
@@ -101,6 +102,16 @@ namespace Targv20Shop.Controllers
                 return NotFound();
             }
 
+            var photos = await _context.ExistingFilePath
+                .Where(x => x.ProductId == id)
+                .Select(y => new ExistingFilePathViewModel
+                {
+                    FilePath = y.FilePath,
+                    PhotoId = y.Id
+                })
+                .ToArrayAsync();
+
+
             var model = new ProductViewModel();
 
             model.Id = product.Id;
@@ -110,6 +121,7 @@ namespace Targv20Shop.Controllers
             model.Price = product.Price;
             model.ModifiedAt = product.ModifiedAt;
             model.CreatedAt = product.CreatedAt;
+            model.ExistingFilePaths.AddRange(photos);
 
             return View(model);
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Targv20Shop.Data;
 
 namespace Targv20Shop.Data.Migrations
 {
     [DbContext(typeof(Targv20ShopDbContext))]
-    partial class Targv20ShopDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211206092456_FileSystem")]
+    partial class FileSystem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +34,6 @@ namespace Targv20Shop.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ExistingFilePath");
                 });
@@ -65,18 +65,6 @@ namespace Targv20Shop.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Product");
-                });
-
-            modelBuilder.Entity("Targv20Shop.Core.Domain.ExistingFilePath", b =>
-                {
-                    b.HasOne("Targv20Shop.Core.Domain.Product", null)
-                        .WithMany("ExistingFilePaths")
-                        .HasForeignKey("ProductId");
-                });
-
-            modelBuilder.Entity("Targv20Shop.Core.Domain.Product", b =>
-                {
-                    b.Navigation("ExistingFilePaths");
                 });
 #pragma warning restore 612, 618
         }
