@@ -29,6 +29,7 @@ namespace Targv20Shop.ApplicationServices.Services
         public async Task<Product> Delete(Guid id)
         {
             var productId = await _context.Product
+                .Include(x => x.ExistingFilePaths)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             _context.Product.Remove(productId);
@@ -76,6 +77,7 @@ namespace Targv20Shop.ApplicationServices.Services
             product.Price = dto.Price;
             product.ModifiedAt = dto.ModifiedAt;
             product.CreatedAt = dto.CreatedAt;
+            ProcessUploadedFile(dto, product);
 
             _context.Product.Update(product);
             await _context.SaveChangesAsync();
@@ -83,6 +85,17 @@ namespace Targv20Shop.ApplicationServices.Services
             return product;
         }
 
+
+        public async Task<ExistingFilePath> RemoveImage(ExistingFilePathDto dto)
+        {
+            var imageId = await _context.ExistingFilePath
+                .FirstOrDefaultAsync(x => x.Id == dto.PhotoId);
+
+            _context.ExistingFilePath.Remove(imageId);
+            await _context.SaveChangesAsync();
+
+            return imageId;
+        }
 
         public string ProcessUploadedFile(ProductDto dto, Product product)
         {

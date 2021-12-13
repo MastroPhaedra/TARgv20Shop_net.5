@@ -15,5 +15,7 @@ namespace Targv20Shop.Core.ServiceInterface
 
         Task<Product> Update(ProductDto dto);
 
+        Task<ExistingFilePath> RemoveImage(ExistingFilePathDto dto);
+
     }
 }

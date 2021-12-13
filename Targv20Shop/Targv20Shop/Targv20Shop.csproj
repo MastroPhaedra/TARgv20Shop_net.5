@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Photo\**" />
+    <Content Remove="Views\Photo\**" />
+    <EmbeddedResource Remove="Views\Photo\**" />
+    <None Remove="Views\Photo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.12">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -15,10 +22,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Targv20Shop.ApplicationServices\Targv20Shop.ApplicationServices.csproj" />
     <ProjectReference Include="..\Targv20Shop.Data\Targv20Shop.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Photo\" />
   </ItemGroup>
 
 </Project>
