@@ -5,15 +5,15 @@ using Targv20Shop.Core.Dtos;
 
 namespace Targv20Shop.Core.ServiceInterface
 {
-    public interface IProductService
+    public interface ICarService
     {
-        Task<Product> Delete(Guid id);
+        Task<Car> Delete(Guid id);
 
-        Task<Product> Add(ProductDto dto);
+        Task<Car> Add(CarDto dto);
 
-        Task<Product> Edit(Guid id);
+        Task<Car> Edit(Guid id);
 
-        Task<Product> Update(ProductDto dto);
+        Task<Car> Update(CarDto dto);
 
         Task<ExistingFilePath> RemoveImage(ExistingFilePathDto dto);
 

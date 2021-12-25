@@ -16,7 +16,7 @@ namespace Targv20Shop.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.12")
+                .HasAnnotation("CarVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Targv20Shop.Core.Domain.ExistingFilePath", b =>
@@ -28,23 +28,23 @@ namespace Targv20Shop.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("ProductId")
+                    b.Property<Guid?>("CarId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("CarId");
 
                     b.ToTable("ExistingFilePath");
                 });
 
-            modelBuilder.Entity("Targv20Shop.Core.Domain.Product", b =>
+            modelBuilder.Entity("Targv20Shop.Core.Domain.Car", b =>
                 {
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Amount")
+                    b.Property<int>("Year")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -53,28 +53,28 @@ namespace Targv20Shop.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ModelName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product");
+                    b.ToTable("Car");
                 });
 
             modelBuilder.Entity("Targv20Shop.Core.Domain.ExistingFilePath", b =>
                 {
-                    b.HasOne("Targv20Shop.Core.Domain.Product", null)
+                    b.HasOne("Targv20Shop.Core.Domain.Car", null)
                         .WithMany("ExistingFilePaths")
-                        .HasForeignKey("ProductId");
+                        .HasForeignKey("CarId");
                 });
 
-            modelBuilder.Entity("Targv20Shop.Core.Domain.Product", b =>
+            modelBuilder.Entity("Targv20Shop.Core.Domain.Car", b =>
                 {
                     b.Navigation("ExistingFilePaths");
                 });
