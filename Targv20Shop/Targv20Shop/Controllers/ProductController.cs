@@ -35,7 +35,7 @@ namespace Targv20Shop.Controllers
                     Id = x.Id,
                     Name = x.Name,
                     Price = x.Price,
-                    Ammount = x.Amount,
+                    Amount = x.Amount,
                     Description = x.Description
                 });
 

@@ -7,7 +7,7 @@ namespace Targv20Shop.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Ammount",
+                name: "Amount",
                 table: "Product",
                 newName: "Amount");
         }
@@ -17,7 +17,7 @@ namespace Targv20Shop.Data.Migrations
             migrationBuilder.RenameColumn(
                 name: "Amount",
                 table: "Product",
-                newName: "Ammount");
+                newName: "Amount");
         }
     }
 }
