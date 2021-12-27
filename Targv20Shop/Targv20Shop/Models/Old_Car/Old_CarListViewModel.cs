@@ -1,13 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace Targv20Shop.Core.Dtos
+namespace Targv20Shop.Models.Car
 {
-    public class CarDto
+    public class Old_CarListViewModel
     {
         public Guid? Id { get; set; }
         public string ModelName { get; set; }
@@ -23,9 +21,5 @@ namespace Targv20Shop.Core.Dtos
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
-
-        public List<IFormFile> Files { get; set; }
-
-        public IEnumerable<ExistingFilePathDto> ExistingFilePaths { get; set; } = new List<ExistingFilePathDto>();
     }
 }

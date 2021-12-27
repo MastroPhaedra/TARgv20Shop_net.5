@@ -32,7 +32,7 @@ namespace Targv20Shop
             services.AddDbContext<Targv20ShopDbContext>(options =>
                 options.UseSqlServer(_config["DeafultConnetion"]));
 
-            services.AddScoped<ICarService, CarServices>();
+            services.AddScoped<IOld_CarService, Old_CarServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

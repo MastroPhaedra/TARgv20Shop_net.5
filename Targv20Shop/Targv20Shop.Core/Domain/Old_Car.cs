@@ -1,13 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Targv20Shop.Models.Files;
-// new
-//using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Targv20Shop.Models.Car
+namespace Targv20Shop.Core.Domain
 {
-    public class CarViewModel
+    public class Old_Car
     {
         public Guid? Id { get; set; }
         public string ModelName { get; set; }
@@ -19,15 +18,11 @@ namespace Targv20Shop.Models.Car
         public string Transmission { get; set; }
         public string Color { get; set; }
         public string VIN { get; set; }
-        //[Required]
-        //[Range(1900, 2050, ErrorMessage = "Year must be between 1900 to 2050")]
         public double Price { get; set; }
         public string Description { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
 
-        public List<IFormFile> Files { get; set; }
-
-        public List<ExistingFilePathViewModel> ExistingFilePaths { get; set; } = new List<ExistingFilePathViewModel>();
+        public IEnumerable<ExistingFilePath> ExistingFilePaths { get; set; } = new List<ExistingFilePath>();
     }
 }

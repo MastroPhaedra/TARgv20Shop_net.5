@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -11,26 +12,23 @@ using Targv20Shop.Models.Car;
 
 namespace Targv20Shop.Controllers
 {
-    public class CarController : Controller
+    public class New_CarController : Controller
     {
         private readonly Targv20ShopDbContext _context;
-        private readonly ICarService _carService;
-
-        public CarController
+        private readonly INew_CarService _carService;
+        public New_CarController
             (
                 Targv20ShopDbContext context,
-                ICarService carService
+                INew_CarService carService
             )
         {
             _context = context;
             _carService = carService;
         }
-
-
-        public IActionResult Index()
+        public IActionResult New_Car()
         {
-            var result = _context.Car
-                .Select(x => new CarListViewModel
+            var result = _context.New_Car
+                .Select(x => new Old_CarListViewModel
                 {
                     Id = x.Id,
                     ModelName = x.ModelName,
@@ -65,15 +63,15 @@ namespace Targv20Shop.Controllers
         [HttpGet]
         public IActionResult Add()
         {
-            CarViewModel model = new CarViewModel();
+            Old_CarViewModel model = new Old_CarViewModel();
 
             return View("Edit", model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(CarViewModel model)
+        public async Task<IActionResult> Add(Old_CarViewModel model)
         {
-            var dto = new CarDto()
+            var dto = new New_CarDto()
             {
                 Id = model.Id,
                 ModelName = model.ModelName,
@@ -92,7 +90,7 @@ namespace Targv20Shop.Controllers
                 Files = model.Files,
                 ExistingFilePaths = model.ExistingFilePaths
                     .Select(x => new ExistingFilePathDto
-                    { 
+                    {
                         PhotoId = x.PhotoId,
                         FilePath = x.FilePath,
                         CarId = x.CarId
@@ -127,7 +125,7 @@ namespace Targv20Shop.Controllers
                 .ToArrayAsync();
 
 
-            var model = new CarViewModel();
+            var model = new Old_CarViewModel();
 
             model.Id = car.Id;
             model.ModelName = car.ModelName;
@@ -150,9 +148,9 @@ namespace Targv20Shop.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Update(CarViewModel model)
+        public async Task<IActionResult> Update(Old_CarViewModel model)
         {
-            var dto = new CarDto()
+            var dto = new New_CarDto()
             {
                 Id = model.Id,
                 ModelName = model.ModelName,

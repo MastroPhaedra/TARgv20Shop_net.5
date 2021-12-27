@@ -11,12 +11,12 @@ using System.IO;
 
 namespace Targv20Shop.ApplicationServices.Services
 {
-    public class CarServices : ICarService
+    public class New_CarServices : INew_CarService
     {
         private readonly Targv20ShopDbContext _context;
         private readonly IWebHostEnvironment _env;
 
-        public CarServices
+        public New_CarServices
             (
                 Targv20ShopDbContext context,
                 IWebHostEnvironment env
@@ -26,21 +26,21 @@ namespace Targv20Shop.ApplicationServices.Services
             _env = env;
         }
 
-        public async Task<Car> Delete(Guid id)
+        public async Task<New_Car> Delete(Guid id)
         {
-            var carId = await _context.Car
+            var carId = await _context.New_Car
                 .Include(x => x.ExistingFilePaths)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            _context.Car.Remove(carId);
+            _context.New_Car.Remove(carId);
             await _context.SaveChangesAsync();
 
             return carId;
         }
 
-        public async Task<Car> Add(CarDto dto)
+        public async Task<New_Car> Add(New_CarDto dto)
         {
-            Car car = new Car();
+            New_Car car = new New_Car();
 
             car.Id = Guid.NewGuid();
             car.ModelName = dto.ModelName;
@@ -58,24 +58,24 @@ namespace Targv20Shop.ApplicationServices.Services
             car.CreatedAt = DateTime.Now;
             ProcessUploadedFile(dto, car);
 
-            await _context.Car.AddAsync(car);
+            await _context.New_Car.AddAsync(car);
             await _context.SaveChangesAsync();
 
             return car;
         }
 
 
-        public async Task<Car> Edit(Guid id)
+        public async Task<New_Car> Edit(Guid id)
         {
-            var result = await _context.Car
+            var result = await _context.New_Car
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return result;
         }
 
-        public async Task<Car> Update(CarDto dto)
+        public async Task<New_Car> Update(New_CarDto dto)
         {
-            Car car = new Car();
+            New_Car car = new New_Car();
 
             car.Id = dto.Id;
             car.ModelName = dto.ModelName;
@@ -93,7 +93,7 @@ namespace Targv20Shop.ApplicationServices.Services
             car.CreatedAt = dto.CreatedAt;
             ProcessUploadedFile(dto, car);
 
-            _context.Car.Update(car);
+            _context.New_Car.Update(car);
             await _context.SaveChangesAsync();
 
             return car;
@@ -111,7 +111,7 @@ namespace Targv20Shop.ApplicationServices.Services
             return imageId;
         }
 
-        public string ProcessUploadedFile(CarDto dto, Car car)
+        public string ProcessUploadedFile(New_CarDto dto, New_Car car)
         {
             string uniqueFileName = null;
 

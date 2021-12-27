@@ -21,7 +21,7 @@ namespace Targv20Shop.Data.Migrations
                 .HasAnnotation("CarVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Targv20Shop.Core.Domain.Car", b =>
+            modelBuilder.Entity("Targv20Shop.Core.Domain.Old_Car", b =>
             {
                 b.Property<Guid>("Id")
                     .ValueGeneratedOnAdd()
@@ -68,7 +68,54 @@ namespace Targv20Shop.Data.Migrations
 
                 b.HasKey("Id");
 
-                b.ToTable("Car");
+                b.ToTable("Old_Car");
+            });
+
+            modelBuilder.Entity("Targv20Shop.Core.Domain.New_Car", b =>
+            {
+                b.Property<Guid>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("uniqueidentifier");
+
+                b.Property<string>("ModelName")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<int>("Year")
+                    .HasColumnType("int");
+
+                b.Property<string>("Engine")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Fuel")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Drive")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Transmission")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Color")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("VIN")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<string>("Description")
+                    .HasColumnType("nvarchar(max)");
+
+                b.Property<double>("Price")
+                    .HasColumnType("float");
+
+                b.Property<DateTime>("CreatedAt")
+                    .HasColumnType("datetime2");
+
+                b.Property<DateTime>("ModifiedAt")
+                    .HasColumnType("datetime2");
+
+                b.HasKey("Id");
+
+                b.ToTable("New_Car");
             });
 #pragma warning restore 612, 618
         }

@@ -8,7 +8,7 @@ namespace Targv20Shop.Data.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "Year",
-                table: "Car",
+                table: "Old_Car",
                 newName: "Year");
         }
 
@@ -16,7 +16,7 @@ namespace Targv20Shop.Data.Migrations
         {
             migrationBuilder.RenameColumn(
                 name: "Year",
-                table: "Car",
+                table: "Old_Car",
                 newName: "Year");
         }
     }
