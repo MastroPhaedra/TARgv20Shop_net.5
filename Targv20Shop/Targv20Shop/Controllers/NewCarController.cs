@@ -11,12 +11,12 @@ using Targv20Shop.Models.Car;
 
 namespace Targv20Shop.Controllers
 {
-    public class CarController : Controller
+    public class NewCarController : Controller
     {
         private readonly Targv20ShopDbContext _context;
         private readonly ICarService _carService;
 
-        public CarController
+        public NewCarController
             (
                 Targv20ShopDbContext context,
                 ICarService carService
@@ -30,7 +30,7 @@ namespace Targv20Shop.Controllers
         public IActionResult Index()
         {
             var result = _context.Car
-                .Where(x=>x.Mileage>0).Select(x => new CarListViewModel
+                .Where(x => x.Mileage == 0).Select(x => new CarListViewModel
                 {
                     Id = x.Id,
                     ModelName = x.ModelName,
@@ -92,7 +92,7 @@ namespace Targv20Shop.Controllers
                 Files = model.Files,
                 ExistingFilePaths = model.ExistingFilePaths
                     .Select(x => new ExistingFilePathDto
-                    { 
+                    {
                         PhotoId = x.PhotoId,
                         FilePath = x.FilePath,
                         CarId = x.CarId

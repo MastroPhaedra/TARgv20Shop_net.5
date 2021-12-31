@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Targv20Shop.Core.Domain;
 using Targv20Shop.Core.Dtos;
+using System.Collections.Generic;
 
 namespace Targv20Shop.Core.ServiceInterface
 {
