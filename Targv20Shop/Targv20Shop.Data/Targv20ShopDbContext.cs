@@ -8,7 +8,7 @@ namespace Targv20Shop.Data
         public Targv20ShopDbContext(DbContextOptions<Targv20ShopDbContext> options)
             : base(options) { }
 
-        public DbSet<Car> Car { get; set; }
+        public DbSet<Product> Product { get; set; }
         public DbSet<ExistingFilePath> ExistingFilePath { get; set; }
     }
 }

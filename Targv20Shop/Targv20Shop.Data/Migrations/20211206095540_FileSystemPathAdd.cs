@@ -7,15 +7,15 @@ namespace Targv20Shop.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateIndex(
-                name: "IX_ExistingFilePath_CarId",
+                name: "IX_ExistingFilePath_ProductId",
                 table: "ExistingFilePath",
-                column: "CarId");
+                column: "ProductId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_ExistingFilePath_Car_CarId",
+                name: "FK_ExistingFilePath_Product_ProductId",
                 table: "ExistingFilePath",
-                column: "CarId",
-                principalTable: "Car",
+                column: "ProductId",
+                principalTable: "Product",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -23,11 +23,11 @@ namespace Targv20Shop.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ExistingFilePath_Car_CarId",
+                name: "FK_ExistingFilePath_Product_ProductId",
                 table: "ExistingFilePath");
 
             migrationBuilder.DropIndex(
-                name: "IX_ExistingFilePath_CarId",
+                name: "IX_ExistingFilePath_ProductId",
                 table: "ExistingFilePath");
         }
     }

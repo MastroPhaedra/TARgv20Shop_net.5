@@ -18,7 +18,7 @@ namespace Targv20Shop.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("CarVersion", "5.0.12")
+                .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Targv20Shop.Core.Domain.ExistingFilePath", b =>
@@ -30,7 +30,7 @@ namespace Targv20Shop.Data.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CarId")
+                    b.Property<Guid?>("ProductId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -38,13 +38,13 @@ namespace Targv20Shop.Data.Migrations
                     b.ToTable("ExistingFilePath");
                 });
 
-            modelBuilder.Entity("Targv20Shop.Core.Domain.Car", b =>
+            modelBuilder.Entity("Targv20Shop.Core.Domain.Product", b =>
                 {
                     b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Year")
+                    b.Property<int>("Amount")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -64,7 +64,7 @@ namespace Targv20Shop.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Car");
+                    b.ToTable("Product");
                 });
 #pragma warning restore 612, 618
         }

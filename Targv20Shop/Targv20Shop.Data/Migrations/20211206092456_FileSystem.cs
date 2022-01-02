@@ -13,7 +13,7 @@ namespace Targv20Shop.Data.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FilePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CarId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {
