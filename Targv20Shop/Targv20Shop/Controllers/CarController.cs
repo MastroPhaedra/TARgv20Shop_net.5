@@ -30,7 +30,7 @@ namespace Targv20Shop.Controllers
         public IActionResult Index()
         {
             var result = _context.Car
-                .Where(x=>x.Mileage>0).Select(x => new CarListViewModel
+                .Select(x => new CarListViewModel
                 {
                     Id = x.Id,
                     ModelName = x.ModelName,
