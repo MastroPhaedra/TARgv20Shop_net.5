@@ -75,13 +75,6 @@ namespace Targv20Shop.ApplicationServices.Services
 
         public async Task<Car> Update(CarDto dto)
         {
-            var dbcar = await _context.Car.AsNoTracking().FirstOrDefaultAsync(x=>x.Id==dto.Id);
-
-            if (dbcar.Mileage>dto.Mileage)
-            {
-                return (dbcar);
-            }
-
             Car car = new Car();
 
             car.Id = dto.Id;
