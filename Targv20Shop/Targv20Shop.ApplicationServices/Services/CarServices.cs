@@ -11,12 +11,12 @@ using System.IO;
 
 namespace Targv20Shop.ApplicationServices.Services
 {
-    public class ProductServices : IProductService
+    public class CarServices : ICarService
     {
         private readonly Targv20ShopDbContext _context;
         private readonly IWebHostEnvironment _env;
 
-        public ProductServices
+        public CarServices
             (
                 Targv20ShopDbContext context,
                 IWebHostEnvironment env
@@ -26,65 +26,79 @@ namespace Targv20Shop.ApplicationServices.Services
             _env = env;
         }
 
-        public async Task<Product> Delete(Guid id)
+        public async Task<Car> Delete(Guid id)
         {
-            var productId = await _context.Product
+            var carId = await _context.Car
                 .Include(x => x.ExistingFilePaths)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            // удаление строки при удалении продукта
-            //_context.ExistingFilePath.RemoveRange(productId.ExistingFilePaths);
-            _context.Product.Remove(productId);
+            // удаление строки при удалении машины
+            //_context.ExistingFilePath.RemoveRange(carId.ExistingFilePaths);
+            _context.Car.Remove(carId);
             await _context.SaveChangesAsync();
 
-            return productId;
+            return carId;
         }
 
-        public async Task<Product> Add(ProductDto dto)
+        public async Task<Car> Add(CarDto dto)
         {
-            Product product = new Product();
+            Car car = new Car();
 
-            product.Id = Guid.NewGuid();
-            product.Description = dto.Description;
-            product.Name = dto.Name;
-            product.Amount = dto.Amount;
-            product.Price = dto.Price;
-            product.ModifiedAt = DateTime.Now;
-            product.CreatedAt = DateTime.Now;
-            ProcessUploadedFile(dto, product);
+            car.Id = Guid.NewGuid();
+            car.ModelName = dto.ModelName;
+            car.Year = dto.Year;
+            car.Engine = dto.Engine;
+            car.Fuel = dto.Fuel;
+            car.Mileage = dto.Mileage;
+            car.Drive = dto.Drive;
+            car.Transmission = dto.Transmission;
+            car.Color = dto.Color;
+            car.VIN = dto.VIN;
+            car.Price = dto.Price;
+            car.Description = dto.Description;
+            car.ModifiedAt = DateTime.Now;
+            car.CreatedAt = DateTime.Now;
+            ProcessUploadedFile(dto, car);
 
-            await _context.Product.AddAsync(product);
+            await _context.Car.AddAsync(car);
             await _context.SaveChangesAsync();
 
-            return product;
+            return car;
         }
 
 
-        public async Task<Product> Edit(Guid id)
+        public async Task<Car> Edit(Guid id)
         {
-            var result = await _context.Product
+            var result = await _context.Car
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return result;
         }
 
-        public async Task<Product> Update(ProductDto dto)
+        public async Task<Car> Update(CarDto dto)
         {
-            Product product = new Product();
+            Car car = new Car();
 
-            product.Id = dto.Id;
-            product.Description = dto.Description;
-            product.Name = dto.Name;
-            product.Amount = dto.Amount;
-            product.Price = dto.Price;
-            product.ModifiedAt = dto.ModifiedAt;
-            product.CreatedAt = dto.CreatedAt;
-            ProcessUploadedFile(dto, product);
+            car.Id = dto.Id;
+            car.ModelName = dto.ModelName;
+            car.Year = dto.Year;
+            car.Engine = dto.Engine;
+            car.Fuel = dto.Fuel;
+            car.Mileage = dto.Mileage;
+            car.Drive = dto.Drive;
+            car.Transmission = dto.Transmission;
+            car.Color = dto.Color;
+            car.VIN = dto.VIN;
+            car.Price = dto.Price;
+            car.Description = dto.Description;
+            car.ModifiedAt = dto.ModifiedAt;
+            car.CreatedAt = dto.CreatedAt;
+            ProcessUploadedFile(dto, car);
 
-            _context.Product.Update(product);
+            _context.Car.Update(car);
             await _context.SaveChangesAsync();
 
-            return product;
+            return car;
         }
 
 
@@ -99,7 +113,7 @@ namespace Targv20Shop.ApplicationServices.Services
             return imageId;
         }
 
-        public string ProcessUploadedFile(ProductDto dto, Product product)
+        public string ProcessUploadedFile(CarDto dto, Car car)
         {
             string uniqueFileName = null;
 
@@ -124,7 +138,7 @@ namespace Targv20Shop.ApplicationServices.Services
                         {
                             Id = Guid.NewGuid(),
                             FilePath = uniqueFileName,
-                            ProductId = product.Id
+                            CarId = car.Id
                         };
 
                         _context.ExistingFilePath.Add(paths);

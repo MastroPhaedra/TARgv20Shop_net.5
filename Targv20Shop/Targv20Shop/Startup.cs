@@ -33,11 +33,14 @@ namespace Targv20Shop
                 options.UseSqlServer(_config["DeafultConnetion"]));
 
             services.AddScoped<IProductService, ProductServices>();
+            services.AddScoped<ICarService, CarServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, Targv20ShopDbContext dbContext)
         {
+            dbContext.Database.Migrate();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

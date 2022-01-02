@@ -1,0 +1,56 @@
+﻿@model IEnumerable<Targv20Shop.Models.Car.CarListViewModel>
+
+@{
+    int queueNumber = 0;
+}
+
+<div>
+    <a asp-action="add" asp-controller="car" type="submit" class="btn btn-danger">Add</a>
+</div>
+<form method="post">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nr</th>
+                <th scope="col">Model Name</th>
+                <th scope="col">Year</th>
+                <th scope="col">Engine</th>
+                <th scope="col">Fuel</th>
+                <th scope="col">Mileage</th>
+                <th scope="col">Drive</th>
+                <th scope="col">Transmission</th>
+                <th scope="col">Color</th>
+                <th scope="col">VIN</th>
+                <th scope="col">Price</th>
+                <th scope="col">Description</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var car in Model)
+            {
+                queueNumber++;
+
+                <tr>
+                    <td class="">@queueNumber</td>
+                    <td class="">@car.ModelName</td>
+                    <td class="">@car.Year</td>
+                    <td class="">@car.Engine</td>
+                    <td class="">@car.Fuel</td>
+                    <td class="">@car.Mileage</td>
+                    <td class="">@car.Drive</td>
+                    <td class="">@car.Transmission</td>
+                    <td class="">@car.Color</td>
+                    <td class="">@car.VIN</td>
+                    <td class="">@car.Price</td>
+                    <td class="">@car.Description</td>
+                    <td>
+                        <a asp-action="edit" asp-controller="car" asp-route-id="@car.Id" class="btn btn-primary">Edit</a>
+                        <input asp-action="delete" asp-controller="car" asp-route-id="@car.Id" type="submit" class="btn btn-danger" value="Delete">
+                    </td>
+
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>

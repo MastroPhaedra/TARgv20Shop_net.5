@@ -10,8 +10,8 @@ using Targv20Shop.Data;
 namespace Targv20Shop.Data.Migrations
 {
     [DbContext(typeof(Targv20ShopDbContext))]
-    [Migration("20211206095540_FileSystemPathAdd")]
-    partial class FileSystemPathAdd
+    [Migration("20220102202932_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,10 +21,63 @@ namespace Targv20Shop.Data.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Targv20Shop.Core.Domain.Car", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Color")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Drive")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Engine")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Fuel")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Mileage")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModelName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Transmission")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("VIN")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Year")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Car");
+                });
+
             modelBuilder.Entity("Targv20Shop.Core.Domain.ExistingFilePath", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("CarId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("FilePath")
@@ -34,6 +87,8 @@ namespace Targv20Shop.Data.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CarId");
 
                     b.HasIndex("ProductId");
 
@@ -71,9 +126,22 @@ namespace Targv20Shop.Data.Migrations
 
             modelBuilder.Entity("Targv20Shop.Core.Domain.ExistingFilePath", b =>
                 {
-                    b.HasOne("Targv20Shop.Core.Domain.Product", null)
+                    b.HasOne("Targv20Shop.Core.Domain.Car", "Car")
+                        .WithMany("ExistingFilePaths")
+                        .HasForeignKey("CarId");
+
+                    b.HasOne("Targv20Shop.Core.Domain.Product", "Product")
                         .WithMany("ExistingFilePaths")
                         .HasForeignKey("ProductId");
+
+                    b.Navigation("Car");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Targv20Shop.Core.Domain.Car", b =>
+                {
+                    b.Navigation("ExistingFilePaths");
                 });
 
             modelBuilder.Entity("Targv20Shop.Core.Domain.Product", b =>
