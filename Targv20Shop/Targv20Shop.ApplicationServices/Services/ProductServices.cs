@@ -5,8 +5,7 @@ using Targv20Shop.Core.Domain;
 using Targv20Shop.Core.Dtos;
 using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
+using System.Linq;
 
 
 namespace Targv20Shop.ApplicationServices.Services
@@ -14,24 +13,37 @@ namespace Targv20Shop.ApplicationServices.Services
     public class ProductServices : IProductService
     {
         private readonly Targv20ShopDbContext _context;
-        private readonly IWebHostEnvironment _env;
+        private readonly IFileServices _file;
 
         public ProductServices
             (
                 Targv20ShopDbContext context,
-                IWebHostEnvironment env
+                IFileServices file
             )
         {
             _context = context;
-            _env = env;
+            _file = file;
         }
 
         public async Task<Product> Delete(Guid id)
         {
+            var photos = await _context.ExistingFilePath
+                .Where(x => x.ProductId == id)
+                .Select(y => new ExistingFilePathDto
+            {
+                ProductId = y.ProductId,
+                FilePath = y.FilePath,
+                PhotoId = y.Id
+            })
+            .ToArrayAsync();
+
+
             var productId = await _context.Product
                 .Include(x => x.ExistingFilePaths)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+
+            await _file.RemoveImages(photos);
             // удаление строки при удалении продукта
             //_context.ExistingFilePath.RemoveRange(productId.ExistingFilePaths);
             _context.Product.Remove(productId);
@@ -51,7 +63,7 @@ namespace Targv20Shop.ApplicationServices.Services
             product.Price = dto.Price;
             product.ModifiedAt = DateTime.Now;
             product.CreatedAt = DateTime.Now;
-            ProcessUploadedFile(dto, product);
+            _file.ProcessUploadedFile(dto, product);
 
             await _context.Product.AddAsync(product);
             await _context.SaveChangesAsync();
@@ -79,7 +91,7 @@ namespace Targv20Shop.ApplicationServices.Services
             product.Price = dto.Price;
             product.ModifiedAt = dto.ModifiedAt;
             product.CreatedAt = dto.CreatedAt;
-            ProcessUploadedFile(dto, product);
+            _file.ProcessUploadedFile(dto, product);
 
             _context.Product.Update(product);
             await _context.SaveChangesAsync();
@@ -87,7 +99,7 @@ namespace Targv20Shop.ApplicationServices.Services
             return product;
         }
 
-
+/*
         public async Task<ExistingFilePath> RemoveImage(ExistingFilePathDto dto)
         {
             var imageId = await _context.ExistingFilePath
@@ -133,6 +145,6 @@ namespace Targv20Shop.ApplicationServices.Services
             }
 
             return uniqueFileName;
-        }
+        }*/
     }
 }

@@ -34,6 +34,7 @@ namespace Targv20Shop
 
             services.AddScoped<IProductService, ProductServices>();
             services.AddScoped<ICarService, CarServices>();
+            services.AddScoped<IFileServices, FileServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
