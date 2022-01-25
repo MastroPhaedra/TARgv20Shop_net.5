@@ -5,8 +5,7 @@ using Targv20Shop.Core.Domain;
 using Targv20Shop.Core.Dtos;
 using Targv20Shop.Core.ServiceInterface;
 using Targv20Shop.Data;
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
+using System.Linq;
 
 
 namespace Targv20Shop.ApplicationServices.Services
@@ -14,24 +13,37 @@ namespace Targv20Shop.ApplicationServices.Services
     public class CarServices : ICarService
     {
         private readonly Targv20ShopDbContext _context;
-        private readonly IWebHostEnvironment _env;
+        private readonly IFileServices _file;
 
         public CarServices
             (
                 Targv20ShopDbContext context,
-                IWebHostEnvironment env
+                IFileServices file
             )
         {
             _context = context;
-            _env = env;
+            _file = file;
         }
 
         public async Task<Car> Delete(Guid id)
         {
+            var photos = await _context.ExistingFilePath
+               .Where(x => x.CarId == id)
+               .Select(y => new ExistingFilePathDto
+               {
+                   CarId = y.CarId,
+                   FilePath = y.FilePath,
+                   PhotoId = y.Id
+               })
+               .ToArrayAsync();
+
+
             var carId = await _context.Car
                 .Include(x => x.ExistingFilePaths)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
+
+            await _file.RemoveImages(photos);
             // удаление строки при удалении машины
             //_context.ExistingFilePath.RemoveRange(carId.ExistingFilePaths);
             _context.Car.Remove(carId);
@@ -58,7 +70,7 @@ namespace Targv20Shop.ApplicationServices.Services
             car.Description = dto.Description;
             car.ModifiedAt = DateTime.Now;
             car.CreatedAt = DateTime.Now;
-            ProcessUploadedFile(dto, car);
+            _file.ProcessUploadedFile(dto, car);
 
             await _context.Car.AddAsync(car);
             await _context.SaveChangesAsync();
@@ -93,7 +105,7 @@ namespace Targv20Shop.ApplicationServices.Services
             car.Description = dto.Description;
             car.ModifiedAt = dto.ModifiedAt;
             car.CreatedAt = dto.CreatedAt;
-            ProcessUploadedFile(dto, car);
+            _file.ProcessUploadedFile(dto, car);
 
             _context.Car.Update(car);
             await _context.SaveChangesAsync();
@@ -111,42 +123,6 @@ namespace Targv20Shop.ApplicationServices.Services
             await _context.SaveChangesAsync();
 
             return imageId;
-        }
-
-        public string ProcessUploadedFile(CarDto dto, Car car)
-        {
-            string uniqueFileName = null;
-
-            if (dto.Files != null && dto.Files.Count > 0)
-            {
-                if (!Directory.Exists(_env.WebRootPath + "\\multipleFileUpload\\"))
-                {
-                    Directory.CreateDirectory(_env.WebRootPath + "\\multipleFileUpload\\");
-                }
-
-                foreach (var photo in dto.Files)
-                {
-                    string uploadsFolder = Path.Combine(_env.WebRootPath, "multipleFileUpload");
-                    uniqueFileName = Guid.NewGuid().ToString() + "_" + photo.FileName;
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                    using (var fileStream = new FileStream(filePath, FileMode.Create))
-                    {
-                        photo.CopyTo(fileStream);
-
-                        ExistingFilePath paths = new ExistingFilePath
-                        {
-                            Id = Guid.NewGuid(),
-                            FilePath = uniqueFileName,
-                            CarId = car.Id
-                        };
-
-                        _context.ExistingFilePath.Add(paths);
-                    }
-                }
-            }
-
-            return uniqueFileName;
         }
     }
 }
