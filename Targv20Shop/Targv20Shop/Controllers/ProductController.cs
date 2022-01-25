@@ -15,15 +15,18 @@ namespace Targv20Shop.Controllers
     {
         private readonly Targv20ShopDbContext _context;
         private readonly IProductService _productService;
+        private readonly IFileServices _fileService;
 
         public ProductController
             (
                 Targv20ShopDbContext context,
-                IProductService productService
+                IProductService productService,
+                IFileServices fileService
             )
         {
             _context = context;
             _productService = productService;
+            _fileService = fileService;
         }
 
 
@@ -165,10 +168,12 @@ namespace Targv20Shop.Controllers
         {
             var dto = new ExistingFilePathDto()
             {
-                PhotoId = model.PhotoId
+                //PhotoId = model.PhotoId
+                FilePath = model.FilePath
             };
 
-            var image = await _productService.RemoveImage(dto);
+            //var image = await _productService.RemoveImage(dto);
+            var image = await _fileService.RemoveImage(dto);
             if (image == null)
             {
                 return RedirectToAction(nameof(Index));
